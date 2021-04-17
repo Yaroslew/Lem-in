@@ -42,16 +42,15 @@ void parser(s_room *rooms)
 
 int main(void){
 
-    int graf[5][2] = {{1,2}, {0,4}, {0,3}, {2,4},{1,3}};
     s_room rooms[5];
     parser((s_room *)rooms);
 
-    int steps = get_way((int **)graf, 5);
+    int steps = get_way((s_room *)rooms);
 
     return 0;
 }
 
-int get_way(int **graf, int rooms_count){
+int get_way(s_room *rooms){
 
     int q = 0;
     int r = 0;

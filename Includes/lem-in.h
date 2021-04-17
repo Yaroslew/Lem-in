@@ -3,19 +3,21 @@
 
 #include "libft.h"
 
-typedef struct  s_vertex
+typedef struct  t_vertex
 {
+    char        *name;
     int         status; // 1- уже есть в очереди.
     int         weight;
-} s_vertex;
+} t_vertex;
 
-typedef struct  s_room{
+typedef struct  t_room{
     char        *name;
     char        **ways;
     int         x;
     int         y;
-}               s_room;
+}               t_room;
 
-int             get_way(int **matrix, int rooms_count);
-int             ft_free_ind(int **arr);
+int             get_way((s_room *)rooms, int length);
+//int             ft_free_ind(int **arr);
+void            insert_in_queue(char **queue,  t_room room, int length)
 #endif

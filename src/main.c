@@ -1,6 +1,6 @@
 #include "lem-in.h"
 
-void parser(s_room *rooms)
+void            parser(s_room *rooms)
 {
     for(int i = 0; i < 5; i++)
     {
@@ -40,49 +40,62 @@ void parser(s_room *rooms)
 }
 
 
-int main(void){
+int				main(void){
+    // тестовые данные.
+    int         length = 5; // количество комнат.
 
-    s_room rooms[5];
+    // парсер и проверки правильности карт. Получение массива комнат.
+    s_room rooms[length];
     parser((s_room *)rooms);
 
-    int steps = get_way((s_room *)rooms);
+    // Поиск в ширину и Эдмондс-Карп.
+    get_way((s_room *)rooms, 5);
 
+    // Отрисовка муравьев(без принтф желательно => скорость).
     return 0;
 }
 
-int get_way(s_room *rooms){
+void            get_way(s_room *rooms, int length){
 
-    int q = 0;
-    int r = 0;
-    char *queue[rooms_count];
-    s_vertex verts[rooms_count];
+    int         q = 0;
+    int         r = 0;
+    char        **queue = (char**)malloc(sizeof (char*) * length);
+    s_vertex    *vertexs = (t_vertex*) malloc(sizeof(t_vertex)*length);
 
-    queue[0] = 0;
+    insert_in_queue(queue, rooms[0], length);
 
-    while(q < rooms_count){
+    // Поиск в ширину.
+    while(q < length){
 
-        verts[queue[q]].status = 1;
-        verts[queue[q]].weight = q;
-        r = 0;
-        while(r < graf[queue[q]].length)
-        {
-            queue[ft_free_ind(queue)] =
-        }
     }
-    // создать очередь.
-    // Создать матрицу
-    // Найти путь.
+    // Матрица смежности.
+    // repeat пока есть пути.
 
+    // Комнаты-призраки??..?....
     return 0;
 }
 
-int     ft_free_ind(int **arr){
-    int q = 0;
+void            insert_in_queue(char **queue,  t_room room, int length){
 
-    while (q < arr.length)
-    {
-        if (arr[q] != null)
-            return q;
-        q++;
+    int         q = 0;
+
+    while(q < length){
+        if (queue[q] == null)
+            break;
     }
+    queue[q] = room.name;
 }
+
+void            insert_in_vertexs(){
+
+}
+//int     ft_free_ind(int **arr){
+//    int q = 0;
+//
+//    while (q < arr.length)
+//    {
+//        if (arr[q] != null)
+//            return q;
+//        q++;
+//    }
+//}

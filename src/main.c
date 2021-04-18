@@ -2,14 +2,14 @@
 
 
 
-int				main(void){
+int				main(int ac, char **av){
     // тестовые данные.
     unsigned int        length; // количество комнат.
     t_room				**rooms;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-	if (parser(&rooms, &length) == -1)
+	if (parser(ac, av, &rooms, &length) == -1)
     	error_management("msg");
 
     // Поиск в ширину и Эдмондс-Карп.

@@ -1,11 +1,16 @@
 #ifndef LEM_IN_LEM_IN_H
 #define LEM_IN_LEM_IN_H
 
-#include "libft.h"
+# include "libft.h"
 
-typedef struct		t_room{
+# include <stdlib.h>
+# include <stdio.h>
+#include <sys/fcntl.h>
+
+typedef struct		s_room
+{
     char			*name;
-    struct t_room	**ways;
+    struct s_room	**ways;
     int				count_ways;
     int				x;
     int				y;
@@ -21,7 +26,20 @@ t_room			*get_room_by_name(char *name, t_room **rooms, int length);
 
 
 // Тестовая хрень.
-int		parser(t_room ***rooms_res, unsigned int *length);
+int         parser(int ac, char **av, t_room ***rooms_res, unsigned int *length);
 void		error_management(char *msg);
+
+/*
+**      parse_map.c
+*/
+
+int         read_map(int fd);
+
+/*
+**      parse_room.c
+*/
+
+int     new_room(t_room **start, t_room **end, t_room **cur, char *line);
+void    fill_the_room(t_room *room, int fd);
 
 #endif

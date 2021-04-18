@@ -94,5 +94,7 @@ add_executable(Lem_in
         libft/srcs/get_next_line.c
         libft/srcs/strjoin_my.c
         src/parser.c
+        src/parse_map.c
+        src/parse_room.c
         src/error_management.c
         src/main.c)

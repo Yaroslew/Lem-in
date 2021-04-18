@@ -3,21 +3,23 @@
 
 #include "libft.h"
 
-typedef struct  t_vertex
-{
-    char        *name;
-    int         status; // 1- уже есть в очереди.
-    int         weight;
-} t_vertex;
+typedef struct		t_room{
+    char			*name;
+    struct t_room	**ways;
+    int				count_ways;
+    int				x;
+    int				y;
+	int				status;
+	int				weight;
+}					t_room;
 
-typedef struct  t_room{
-    char        *name;
-    char        **ways;
-    int         x;
-    int         y;
-}               t_room;
+void            get_way(t_room *rooms, int length);
+void			check_ways(t_room room, char **queue, int length);
+void            set_queue(char **queue,  t_room *room, int length);
+void            set_weight(t_room room, int weight);
 
-int             get_way((s_room *)rooms, int length);
-//int             ft_free_ind(int **arr);
-void            insert_in_queue(char **queue,  t_room room, int length)
+
+// Тестовая хрень.
+void            parser(t_room *rooms);
+
 #endif

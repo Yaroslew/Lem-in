@@ -4,15 +4,11 @@
 
 int				main(void){
     // тестовые данные.
-    unsigned int        length = 5; // количество комнат.
+    unsigned int        length; // количество комнат.
     t_room				**rooms;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-//    t_room rooms[length];
-//    if (parser(&rooms, &length) == -1)
-//	safe_call_int(parser(&rooms, &length), "Get out!");
-//    safe_call_ptr();
 	if (parser(&rooms, &length) == -1)
     	error_management("msg");
 

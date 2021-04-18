@@ -1,55 +1,28 @@
 #include "lem-in.h"
 
-void            parser(t_room *rooms)
-{
-    for(int i = 0; i < 5; i++)
-        rooms[i].name = (char *)malloc(sizeof (char)*2);
-    rooms[0].name = "R0";
-    rooms[1].name = "R1";
-    rooms[2].name = "R2";
-    rooms[3].name = "R3";
-    rooms[4].name = "R4";
-
-    rooms[0].ways = (t_room**)malloc(sizeof(t_room*) * 2);
-    rooms[0].ways[0] = &rooms[1];
-    rooms[0].ways[1] = &rooms[2];
-    rooms[0].count_ways = 2;
-
-	rooms[1].ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[1].ways[0] = &rooms[0];
-	rooms[1].ways[1] = &rooms[4];
-	rooms[1].count_ways = 2;
-
-	rooms[2].ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[2].ways[0] = &rooms[0];
-	rooms[2].ways[1] = &rooms[3];
-	rooms[2].count_ways = 2;
-
-	rooms[3].ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[3].ways[0] = &rooms[2];
-	rooms[3].ways[1] = &rooms[4];
-	rooms[3].count_ways = 2;
-
-	rooms[4].ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[4].ways[0] = &rooms[1];
-	rooms[4].ways[1] = &rooms[3];
-	rooms[4].count_ways = 2;
-}
 
 
 int				main(void){
     // тестовые данные.
-    int         length = 5; // количество комнат.
+    unsigned int        length = 5; // количество комнат.
+    t_room				**rooms;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-    t_room rooms[length];
-    parser((t_room *)rooms);
-
+//    t_room rooms[length];
+//    if (parser(&rooms, &length) == -1)
+//	safe_call_int(parser(&rooms, &length), "Get out!");
+//    safe_call_ptr();
+	if (parser(&rooms, &length) == -1)
+    	error_management("msg");
 
     // Поиск в ширину и Эдмондс-Карп.
     get_way(rooms, 5);
 
+	for(int i = 0; i < length; i++)
+	{
+		ft_printf("название комнаты: %s  вес: %d \n", rooms[i]->name, rooms[i]->weight);
+	}
 
     // Отрисовка муравьев(без принтф желательно => скорость).
     return 0;
@@ -60,19 +33,16 @@ void            get_way(t_room *rooms, int length){
     int         q = 0;
     char        **queue = (char**)malloc(sizeof (char*) * length);
 
-	ft_bzero(queue, length);
+    for(int i = 0; i < length; i++)
+		ft_bzero(queue, length * sizeof(char *));
 	set_queue(queue, &rooms[0], length);
 
     // Поиск в ширину.
     while(q < length){
-		set_weight(rooms[q], q);
+		set_weight(queue[q], rooms, q, length);
 		check_ways(rooms[q], queue, length);
     	q++;
     }
-    for(int i = 0; i < length; i++)
-	{
-    	ft_printf("название комнаты: %s  вес: %d \n", rooms[i].name, rooms[i].weight);
-	}
 
     // Матрица смежности.
     // repeat пока есть пути.
@@ -103,9 +73,19 @@ void            set_queue(char **queue,  t_room *room, int length){
     queue[q] = room->name;
 }
 
-void            set_weight(t_room room, int weight){
-	room.status = 1;
-	room.weight = weight;
+void            set_weight(char *name, t_room *rooms, int weight, int length){
+	t_room *room = get_room_by_name(name, rooms, length);
+	room->status = 1;
+	room->weight = weight;
+}
+t_room			*get_room_by_name(char *name, t_room **rooms, int length){
+	int			q = 0;
+
+	while (q < length){
+		if (ft_strcmp(rooms[q]->name, name) == 1)
+			return &rooms[q];
+		q++;
+	}
 }
 
 

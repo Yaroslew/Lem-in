@@ -6,7 +6,7 @@
 #    By: Pcorlys- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/04 19:55:13 by pcorlys-          #+#    #+#              #
-#    Updated: 2021/04/10 14:44:35 by pcorlys-         ###   ########.fr        #
+#    Updated: 2021/04/18 13:12:42 by pcorlys-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ OBJ = ./obj
 LIB = ./libft
 
 SRC_FILES = main.c\
+			error_management.c\
+			parser.c\
 
 SRCS 		= $(addprefix $(SRC)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ)/, $(SRC_FILES:c=o))

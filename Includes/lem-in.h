@@ -16,10 +16,12 @@ typedef struct		t_room{
 void            get_way(t_room *rooms, int length);
 void			check_ways(t_room room, char **queue, int length);
 void            set_queue(char **queue,  t_room *room, int length);
-void            set_weight(t_room room, int weight);
+void            set_weight(char *name, t_room *rooms, int weight, int length);
+t_room			*get_room_by_name(char *name, t_room **rooms, int length);
 
 
 // Тестовая хрень.
-void            parser(t_room *rooms);
+int		parser(t_room ***rooms_res, unsigned int *length);
+void		error_management(char *msg);
 
 #endif

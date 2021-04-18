@@ -8,6 +8,10 @@ int		parser(t_room ***rooms_res, unsigned int *length)
 	if (rooms_res == NULL || *length == NULL)
 		return (-1);
 	rooms = ft_memalloc(sizeof(t_room *) * (TEMP_LENGTH + 1));
+    for (unsigned int i = 0; i < TEMP_LENGTH; i++)
+    {
+        rooms[i] = ft_memalloc(sizeof(t_room));
+    }
 	for(int i = 0; i < TEMP_LENGTH; i++)
 		rooms[i]->name = (char *)malloc(sizeof (char)*2);
 	rooms[0]->name = "R0";

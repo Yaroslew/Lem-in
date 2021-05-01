@@ -61,9 +61,33 @@ int     open_file(int ac, char **av, int *fd)
     return (0);
 }
 
+void			read_whole_file(t_list **read_line, int fd)
+{
+	char        	*line;
+	t_list			*tmp;
+
+	*read_line = NULL;
+	while (get_next_line(fd, &line))
+	{
+		if (*read_line == NULL)
+		{
+			*read_line = ft_lstnew(&line, sizeof(char **));
+			(*read_line)->next = NULL;
+			tmp = *read_line;
+		}
+		else
+		{
+			tmp->next = ft_lstnew(&line, sizeof(char **));
+			tmp = tmp->next;
+			tmp->next = NULL;
+		}
+	}
+}
+
 int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
 {
 	t_room **rooms;
+	t_list	*whole_file;
 //	t_list	tmp_rooms;
 //	t_room
 	int     fd;
@@ -71,12 +95,10 @@ int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
 	//костыль, позже уберём
 	if (ac > 1 && ft_strequ(av[1], "-1"))
 		return run_hardcode(rooms_res, length);
-
 	if (rooms_res == NULL || length == NULL)
 		return (-1);
 	if (open_file(ac, av, &fd) != 0)
         error_management("open error");
-	read_map(fd, rooms_res, length);
-
-
+	read_whole_file(&whole_file, fd);
+	read_map(whole_file, rooms_res, length);
 }

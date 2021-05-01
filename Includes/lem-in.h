@@ -33,13 +33,19 @@ void		error_management(char *msg);
 **      parse_map.c
 */
 
-int         read_map(int fd, t_room ***rooms_res, unsigned int *length);
+int         read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length);
 
 /*
 **      parse_room.c
 */
 
-int     new_room(t_room **start, t_room **end, t_room **cur, char *line);
-void    fill_the_room(t_room *room, int fd);
+int     new_room(t_room **start, t_room **end, t_room **cur, t_list **file);
+void    fill_the_room(t_room *room, t_list **file);
+
+/*
+ * 		parse_roommates
+ */
+
+void	parse_roommates(t_list *file, t_room **rooms, unsigned int length);
 
 #endif

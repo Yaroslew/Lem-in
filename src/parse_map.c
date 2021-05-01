@@ -4,10 +4,16 @@
 
 #include "lem-in.h"
 
-int     parse_comment(const char *line)
+int     parse_comment(t_list **file)
 {
+	char	*line;
+
+	line = *(char **)(*file)->content;
     if (!*line || (*line == '#' && line[1] != '#'))
-        return (1);
+	{
+		(*file) = (*file)->next;
+		return (1);
+	}
     return (0);
 }
 
@@ -26,24 +32,25 @@ int     is_a_room(char *line)
 //3) remember start and end
 //4) fill boxes
 
-unsigned int    read_map_rooms(int fd, t_list **tmp_lst, t_room **begin, t_room **end)
+int    read_map_rooms(t_list **file, t_list **tmp_lst, t_room **begin, t_room **end)
 {
     char        	*line;
     t_room      	*cur;
-    unsigned int	size;
+    int	size;
 
     size = 0;
-    while (get_next_line(fd, &line))
+    while ((*file))
     {
-        if (parse_comment(line))
+    	line = *(char **)(*file)->content;
+        if (parse_comment(&(*file)))
             continue ;
         if (is_a_room(line))
-            new_room(begin, end, &cur, line);
+            new_room(begin, end, &cur, &(*file));
         else
             break ;
-        fill_the_room(cur, fd);
+        fill_the_room(cur, &(*file));
         if (cur != *begin && cur != *end)
-	        ft_lstadd(tmp_lst, ft_lstnew(cur, sizeof(t_room *)));
+	        ft_lstadd(tmp_lst, ft_lstnew(&cur, sizeof(t_room **)));
         size++;
     }
     if (*tmp_lst == NULL && *begin == NULL && *end == NULL)
@@ -58,7 +65,7 @@ unsigned int    read_map_rooms(int fd, t_list **tmp_lst, t_room **begin, t_room 
 t_room	**create_array(t_list *tmp_lst, t_room *begin, t_room *end, unsigned int size)
 {
 	t_room			**rooms;
-	unsigned int	i;
+	int	i;
 
 	i = 1;
 	rooms = ft_memalloc((sizeof (t_room *)) * (size + 1));
@@ -67,7 +74,7 @@ t_room	**create_array(t_list *tmp_lst, t_room *begin, t_room *end, unsigned int 
 	{
 		if (i >= size - 1)
 			error_management("parser error");
-		rooms[i] = tmp_lst->content;
+		rooms[i] = *(t_room **)(tmp_lst->content);
 		tmp_lst = tmp_lst->next;
 		i++;
 	}
@@ -76,15 +83,33 @@ t_room	**create_array(t_list *tmp_lst, t_room *begin, t_room *end, unsigned int 
 	return (rooms);
 }
 
-int    read_map(int fd, t_room ***rooms_res, unsigned int *length)
+void	check_res(t_room **room, unsigned int length)
+{
+	int		i = 0;
+	t_room	*res;
+	while (i < length)
+	{
+		res = room[i];
+		ft_printf("name = %s, count_ways = %d, x = %d, y = %d, status = %d, weight = %d\n",
+			res->name, res->count_ways, res->x, res->y, res->status, res->weight);
+		i++;
+	}
+}
+
+int    read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length)
 {
 	t_list      *tmp_lst;
 	t_room      *begin;
 	t_room      *end;
+	t_list		*tmp;
 
 	tmp_lst = NULL;
 	begin = NULL;
 	end = NULL;
-	*length = read_map_rooms(fd, &tmp_lst, &begin, &end);
+	tmp = whole_file;
+	*length = read_map_rooms(&tmp, &tmp_lst, &begin, &end);
 	*rooms_res = create_array(tmp_lst, begin, end, *length);
+	check_res(*rooms_res, *length);
+	parse_roommates(tmp, *rooms_res, *length);
+	ft_putendl("Ok");
 }

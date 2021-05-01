@@ -11,7 +11,7 @@ int				main(int ac, char **av){
     	error_management("msg");
 
     // Поиск в ширину и Эдмондс-Карп.
-    get_way(rooms, 5);
+    get_way(rooms, length);
 
 	for(unsigned int i = 0; i < length; i++)
 	{
@@ -25,16 +25,14 @@ int				main(int ac, char **av){
 }
 
 
-void            get_way(t_room **ptr_rooms, int length){
+void            get_way(t_room **rooms, int length){
 
     int         q = 0;
     char        **queue = (char**)malloc(sizeof (char*) * length);
-    t_room		*rooms;
 
-    rooms = *ptr_rooms;
     for(int i = 0; i < length; i++)
 		ft_bzero(queue, length * sizeof(char *));
-	set_queue(queue, &rooms[0], length);
+	set_queue(queue, rooms[0], length);
 
     // Поиск в ширину.
     while(q < length){
@@ -50,13 +48,33 @@ void            get_way(t_room **ptr_rooms, int length){
     return;
 }
 
-void			check_ways(t_room room, char **queue, int length){
+void            set_weight(char *name, t_room **rooms, int weight, int length){
+
+	t_room 		*current_room;
+
+	current_room = get_room_by_name(name, rooms, length);
+	current_room->status = 1;
+	current_room->weight = weight;
+}
+
+t_room			*get_room_by_name(char *name, t_room **rooms, int length){
+	int			q = 0;
+
+	while (q < length){
+		if (ft_strcmp(rooms[q]->name, name) == 0)
+			return rooms[q];
+		q++;
+	}
+	return NULL;
+}
+
+void			check_ways(t_room *room, char **queue, int length){
 	int q = 0;
 
-	while(q < room.count_ways)
+	while(q < room->count_ways)
 	{
-		if (room.ways[q]->status != 1)
-			set_queue(queue, room.ways[q], length);
+		if (room->ways[q]->status != 1)
+			set_queue(queue, room->ways[q], length);
 		q++;
 	}
 }
@@ -72,24 +90,8 @@ void            set_queue(char **queue,  t_room *room, int length){
     queue[q] = room->name;
 }
 
-void            set_weight(char *name, t_room *rooms, int weight, int length){
 
-	t_room *room = get_room_by_name(name, &rooms, length);
-	room->status = 1;
-	room->weight = weight;
-}
 
-t_room			*get_room_by_name(char *name, t_room **ptr_rooms, int length){
-	int			q = 0;
-	t_room		**rooms;
 
-	rooms = ptr_rooms;
-	while (q < length){
-		if (ft_strcmp(rooms[q]->name, name) == 0)
-			return &rooms[q];
-		q++;
-	}
-	return NULL;
-}
 
 

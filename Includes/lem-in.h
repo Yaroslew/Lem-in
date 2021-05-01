@@ -18,7 +18,7 @@ typedef struct		s_room
 	int				weight;
 }					t_room;
 
-void            get_way(t_room *rooms, int length);
+void            get_way(t_room **rooms, int length);
 void			check_ways(t_room room, char **queue, int length);
 void            set_queue(char **queue,  t_room *room, int length);
 void            set_weight(char *name, t_room *rooms, int weight, int length);

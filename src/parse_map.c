@@ -164,6 +164,38 @@ void	check_repeats(t_room **rooms_res, unsigned int length)
 	}
 }
 
+//как понять, что внутри есть цикл?
+int	check_existing_way(t_room **rooms, unsigned int length, t_room *cur)
+{
+	int		j;
+
+	j = 0;
+	if (cur == rooms[length - 1])
+	{
+		cur->status = 0;
+		return (1);
+	}
+	if (cur == NULL || cur->count_ways == 0)
+	{
+		cur->status = 0;
+		return (0);
+	}
+	while (j < cur->count_ways)
+	{
+		if (cur->ways[j]->status == 1)
+			return (0);
+		cur->ways[j]->status = 1;
+		if (check_existing_way(rooms, length, cur->ways[j]))
+		{
+			cur->ways[j]->status = 0;
+			return (1);
+		}
+		j++;
+	}
+	cur->status = 0;
+	return 0;
+}
+
 int    read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length, unsigned int *ants)
 {
 	t_list      *tmp_lst;
@@ -181,5 +213,7 @@ int    read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length, u
 	check_res(*rooms_res, *length);
 	parse_roommates(tmp, *rooms_res, *length);
 	check_repeats(*rooms_res, *length);
+	if (!check_existing_way(*rooms_res, *length, **rooms_res))
+		error_management("read_map: No way from ##start to ##end");
 	ft_putendl("Ok");
 }

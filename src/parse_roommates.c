@@ -64,7 +64,7 @@ static void	get_roommate(char *line, t_room **rooms, unsigned int length)
 			break ;
 		if (ft_strequ(rooms[i]->name, name))
 			room = rooms[i];
-		if (ft_strequ(rooms[i]->name, name))
+		if (ft_strequ(rooms[i]->name, roommate_name))
 			roommate = rooms[i];
 		i++;
 	}

@@ -91,6 +91,5 @@ int     new_room(t_room **start, t_room **end, t_room **cur, t_list **file)
 		error_management("Two start directive. Please, change map.");
 	else if (define_directive(end, cur, file, "##end"))
 		error_management("Two end directive. Please, change map.");
-//	fill_the_room(cur, fd);
 	return (0);
 }

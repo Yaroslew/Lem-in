@@ -10,4 +10,5 @@ u 2 2
 u-b
 #comment
 c-u
-a-b
+a-c
+c-b

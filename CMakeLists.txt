@@ -98,4 +98,6 @@ add_executable(Lem_in
         src/parse_room.c
         src/error_management.c
         src/parse_roommates.c
-        src/main.c)
+        src/main.c
+        src/main.c
+        src/breadth_first_search.c)

@@ -2,7 +2,6 @@
 #define LEM_IN_LEM_IN_H
 
 # include "libft.h"
-
 # include <stdlib.h>
 # include <stdio.h>
 #include <sys/fcntl.h>
@@ -18,12 +17,15 @@ typedef struct		s_room
 	int				weight;
 }					t_room;
 
-void            get_way(t_room **rooms, int length);
-void			check_ways(t_room room, char **queue, int length);
-void            set_queue(char **queue,  t_room *room, int length);
-void            set_weight(char *name, t_room *rooms, int weight, int length);
-t_room			*get_room_by_name(char *name, t_room **rooms, int length);
-
+//main
+void            get_way(t_room **rooms, unsigned int length);
+//breadth first search
+void			check_ways(t_room *room, char **queue, unsigned int length);
+void            set_queue(char **queue,  t_room *room, unsigned int length);
+void            set_weight(char *name, t_room **rooms,unsigned int weight, unsigned int length);
+t_room			*get_room_by_name(char *name, t_room **rooms, unsigned int length);
+//matrix
+void			create_matrix(int **matrix, unsigned int length);
 
 // Тестовая хрень.
 int         parser(int ac, char **av, t_room ***rooms_res, unsigned int *length);

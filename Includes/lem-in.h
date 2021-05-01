@@ -33,7 +33,7 @@ void		error_management(char *msg);
 **      parse_map.c
 */
 
-int         read_map(int fd);
+int         read_map(int fd, t_room ***rooms_res, unsigned int *length);
 
 /*
 **      parse_room.c

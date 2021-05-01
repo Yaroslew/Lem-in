@@ -3,10 +3,9 @@
 
 #include "lem-in.h"
 
-int		run_hardcode(int ac, char **av, t_room ***rooms_res, unsigned int *length)
+int		run_hardcode(t_room ***rooms_res, unsigned int *length)
 {
 	t_room **rooms;
-	int     fd;
 
 	rooms = ft_memalloc(sizeof(t_room *) * (TEMP_LENGTH + 1));
 	for (unsigned int i = 0; i < TEMP_LENGTH; i++)
@@ -65,17 +64,19 @@ int     open_file(int ac, char **av, int *fd)
 int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
 {
 	t_room **rooms;
+//	t_list	tmp_rooms;
+//	t_room
 	int     fd;
 
 	//костыль, позже уберём
 	if (ac > 1 && ft_strequ(av[1], "-1"))
-		return run_hardcode(ac, av, rooms_res, length);
+		return run_hardcode(rooms_res, length);
 
 	if (rooms_res == NULL || length == NULL)
 		return (-1);
 	if (open_file(ac, av, &fd) != 0)
         error_management("open error");
-	read_map(fd);
+	read_map(fd, rooms_res, length);
 
 
 }

@@ -26,31 +26,65 @@ int     is_a_room(char *line)
 //3) remember start and end
 //4) fill boxes
 
-
-
-int    read_map(int fd)
+unsigned int    read_map_rooms(int fd, t_list **tmp_lst, t_room **begin, t_room **end)
 {
-    t_list      *tmp_lst;
-    t_room      *begin;
-    t_room      *end;
-    char        *line;
-    t_room      *cur;
+    char        	*line;
+    t_room      	*cur;
+    unsigned int	size;
 
-    tmp_lst = NULL;
-    begin = NULL;
-    end = NULL;
+    size = 0;
     while (get_next_line(fd, &line))
     {
         if (parse_comment(line))
             continue ;
         if (is_a_room(line))
-            new_room(&begin, &end, &cur, line);
+            new_room(begin, end, &cur, line);
         else
             break ;
         fill_the_room(cur, fd);
-        ft_lstadd(&tmp_lst, ft_lstnew(cur, sizeof(t_room *)));
+        if (cur != *begin && cur != *end)
+	        ft_lstadd(tmp_lst, ft_lstnew(cur, sizeof(t_room *)));
+        size++;
     }
-    if (tmp_lst == NULL)
+    if (*tmp_lst == NULL && *begin == NULL && *end == NULL)
         error_management("Map is empty.");
-    return (0);
+    if (*begin == NULL)
+		error_management("No start!");
+	if (*end == NULL)
+		error_management("No end!");
+	return (size);
+}
+
+t_room	**create_array(t_list *tmp_lst, t_room *begin, t_room *end, unsigned int size)
+{
+	t_room			**rooms;
+	unsigned int	i;
+
+	i = 1;
+	rooms = ft_memalloc((sizeof (t_room *)) * (size + 1));
+	rooms[0] = begin;
+	while (tmp_lst)
+	{
+		if (i >= size - 1)
+			error_management("parser error");
+		rooms[i] = tmp_lst->content;
+		tmp_lst = tmp_lst->next;
+		i++;
+	}
+	rooms[size - 1] = end;
+	rooms[size] = NULL;
+	return (rooms);
+}
+
+int    read_map(int fd, t_room ***rooms_res, unsigned int *length)
+{
+	t_list      *tmp_lst;
+	t_room      *begin;
+	t_room      *end;
+
+	tmp_lst = NULL;
+	begin = NULL;
+	end = NULL;
+	*length = read_map_rooms(fd, &tmp_lst, &begin, &end);
+	*rooms_res = create_array(tmp_lst, begin, end, *length);
 }

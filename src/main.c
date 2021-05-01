@@ -1,34 +1,36 @@
 #include "lem-in.h"
 
-
-
-int				main(int ac, char **av){
+int				main(void){
     // тестовые данные.
     unsigned int        length; // количество комнат.
     t_room				**rooms;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-	if (parser(ac, av, &rooms, &length) == -1)
+	if (parser(&rooms, &length) == -1)
     	error_management("msg");
 
     // Поиск в ширину и Эдмондс-Карп.
-    get_way(rooms, 5);
+//    get_way(rooms, 5);
 
-	for(int i = 0; i < length; i++)
+	for(unsigned int i = 0; i < length; i++)
 	{
 		ft_printf("название комнаты: %s  вес: %d \n", rooms[i]->name, rooms[i]->weight);
+		ft_printf("Путь 1: %s\n", rooms[i]->ways[0]->name);
+		ft_printf("Путь 2: %s\n", rooms[i]->ways[1]->name);
 	}
 
     // Отрисовка муравьев(без принтф желательно => скорость).
     return 0;
 }
 
-void            get_way(t_room *rooms, int length){
+void            get_way(t_room **ptr_rooms, int length){
 
     int         q = 0;
     char        **queue = (char**)malloc(sizeof (char*) * length);
+    t_room		*rooms;
 
+    rooms = *ptr_rooms;
     for(int i = 0; i < length; i++)
 		ft_bzero(queue, length * sizeof(char *));
 	set_queue(queue, &rooms[0], length);
@@ -70,18 +72,23 @@ void            set_queue(char **queue,  t_room *room, int length){
 }
 
 void            set_weight(char *name, t_room *rooms, int weight, int length){
-	t_room *room = get_room_by_name(name, rooms, length);
+
+	t_room *room = get_room_by_name(name, &rooms, length);
 	room->status = 1;
 	room->weight = weight;
 }
-t_room			*get_room_by_name(char *name, t_room **rooms, int length){
-	int			q = 0;
 
+t_room			*get_room_by_name(char *name, t_room **ptr_rooms, int length){
+	int			q = 0;
+	t_room		*rooms;
+
+	rooms = *ptr_rooms;
 	while (q < length){
-		if (ft_strcmp(rooms[q]->name, name) == 1)
+		if (ft_strcmp(rooms[q].name, name) == 0)
 			return &rooms[q];
 		q++;
 	}
+	return NULL;
 }
 
 

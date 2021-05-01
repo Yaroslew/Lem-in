@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: Pcorlys- <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/04/04 19:55:13 by pcorlys-          #+#    #+#              #
-#    Updated: 2021/04/18 13:12:42 by pcorlys-         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = lem_in
 
 SRC = ./src
@@ -29,7 +17,7 @@ INC_LIB = -I ./libft/includes
 LIB_NAME = ./libft/libftprintf.a
 LIBS_LINK = -L $(LIB)
 
-FLAGS = -Wall -Wextra #-Werror
+FLAGS = -Wall -Wextra -Werror
 
 .PHONY: all clean fclean re
 

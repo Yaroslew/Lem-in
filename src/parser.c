@@ -2,33 +2,17 @@
 
 
 #include "lem-in.h"
-int     open_file(int ac, char **av, int *fd)
-{
-    if (ac < 2)
-        error_management("too few arguments\nusage:\n./lem_in filename");
-    *fd = open(av[1], O_RDONLY);
-    ft_printf("map name = %s\nfd = %d\n", av[1], *fd);
-    if (*fd <= 2)
-        return (-1);
-    return (0);
-}
 
-int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
+int		run_hardcode(int ac, char **av, t_room ***rooms_res, unsigned int *length)
 {
 	t_room **rooms;
 	int     fd;
 
-	if (rooms_res == NULL || length == NULL)
-		return (-1);
-//	if (open_file(ac, av, &fd) != 0)
-//        error_management("open error");
-//	read_map(fd);
-
 	rooms = ft_memalloc(sizeof(t_room *) * (TEMP_LENGTH + 1));
-    for (unsigned int i = 0; i < TEMP_LENGTH; i++)
-    {
-        rooms[i] = ft_memalloc(sizeof(t_room));
-    }
+	for (unsigned int i = 0; i < TEMP_LENGTH; i++)
+	{
+		rooms[i] = ft_memalloc(sizeof(t_room));
+	}
 	for(int i = 0; i < TEMP_LENGTH; i++)
 		rooms[i]->name = (char *)malloc(sizeof (char)*2);
 	rooms[0]->name = "R0";
@@ -65,4 +49,33 @@ int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
 	*rooms_res = rooms;
 	*length = TEMP_LENGTH;
 	return (0);
+}
+
+int     open_file(int ac, char **av, int *fd)
+{
+    if (ac < 2)
+        error_management("too few arguments\nusage:\n./lem_in filename");
+    *fd = open(av[1], O_RDONLY);
+    ft_printf("map name = %s\nfd = %d\n", av[1], *fd);
+    if (*fd <= 2)
+        return (-1);
+    return (0);
+}
+
+int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
+{
+	t_room **rooms;
+	int     fd;
+
+	//костыль, позже уберём
+	if (ac > 1 && ft_strequ(av[1], "-1"))
+		return run_hardcode(ac, av, rooms_res, length);
+
+	if (rooms_res == NULL || length == NULL)
+		return (-1);
+	if (open_file(ac, av, &fd) != 0)
+        error_management("open error");
+	read_map(fd);
+
+
 }

@@ -24,6 +24,7 @@ int				main(int ac, char **av){
     return 0;
 }
 
+
 void            get_way(t_room **ptr_rooms, int length){
 
     int         q = 0;

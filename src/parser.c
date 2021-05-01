@@ -20,9 +20,9 @@ int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
 
 	if (rooms_res == NULL || length == NULL)
 		return (-1);
-	if (open_file(ac, av, &fd) != 0)
-        error_management("open error");
-	read_map(fd);
+//	if (open_file(ac, av, &fd) != 0)
+//        error_management("open error");
+//	read_map(fd);
 
 	rooms = ft_memalloc(sizeof(t_room *) * (TEMP_LENGTH + 1));
     for (unsigned int i = 0; i < TEMP_LENGTH; i++)

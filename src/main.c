@@ -1,17 +1,17 @@
 #include "lem-in.h"
 
-int				main(void){
+int				main(int ac, char **av){
     // тестовые данные.
     unsigned int        length; // количество комнат.
     t_room				**rooms;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-	if (parser(&rooms, &length) == -1)
+	if (parser(ac, av, &rooms, &length) == -1)
     	error_management("msg");
 
     // Поиск в ширину и Эдмондс-Карп.
-//    get_way(rooms, 5);
+    get_way(rooms, 5);
 
 	for(unsigned int i = 0; i < length; i++)
 	{
@@ -80,11 +80,11 @@ void            set_weight(char *name, t_room *rooms, int weight, int length){
 
 t_room			*get_room_by_name(char *name, t_room **ptr_rooms, int length){
 	int			q = 0;
-	t_room		*rooms;
+	t_room		**rooms;
 
-	rooms = *ptr_rooms;
+	rooms = ptr_rooms;
 	while (q < length){
-		if (ft_strcmp(rooms[q].name, name) == 0)
+		if (ft_strcmp(rooms[q]->name, name) == 0)
 			return &rooms[q];
 		q++;
 	}

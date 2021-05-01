@@ -7,6 +7,8 @@ LIB = ./libft
 SRC_FILES = main.c\
 			error_management.c\
 			parser.c\
+			parse_map.c\
+			parse_room.c\
 
 SRCS 		= $(addprefix $(SRC)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ)/, $(SRC_FILES:c=o))

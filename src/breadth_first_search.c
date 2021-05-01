@@ -1,6 +1,6 @@
 #include "lem-in.h"
 
-void            set_weight(char *name, t_room **rooms, int weight, int length){
+void            set_weight(char *name, t_room **rooms, unsigned int weight, unsigned int length){
 
 	t_room 		*current_room;
 
@@ -9,7 +9,7 @@ void            set_weight(char *name, t_room **rooms, int weight, int length){
 	current_room->weight = weight;
 }
 
-t_room			*get_room_by_name(char *name, t_room **rooms, int length){
+t_room			*get_room_by_name(char *name, t_room **rooms, unsigned int length){
 	int			q = 0;
 
 	while (q < length){
@@ -20,7 +20,7 @@ t_room			*get_room_by_name(char *name, t_room **rooms, int length){
 	return NULL;
 }
 
-void			check_ways(t_room *room, char **queue, int length){
+void			check_ways(t_room *room, char **queue, unsigned int length){
 	int q = 0;
 
 	while(q < room->count_ways)
@@ -31,7 +31,7 @@ void			check_ways(t_room *room, char **queue, int length){
 	}
 }
 
-void            set_queue(char **queue,  t_room *room, int length){
+void            set_queue(char **queue,  t_room *room, unsigned int length){
 	int         q = 0;
 
 	while(q < length){

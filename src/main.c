@@ -25,10 +25,11 @@ int				main(int ac, char **av){
 }
 
 
-void            get_way(t_room **rooms, int length){
+void            get_way(t_room **rooms, unsigned int length){
 
-    int         q = 0;
+    unsigned int         q = 0;
     char        **queue;
+    int 		**matrix;
 
     queue =  (char**)malloc(sizeof (char*) * length);
     for(int i = 0; i < length; i++)
@@ -42,7 +43,7 @@ void            get_way(t_room **rooms, int length){
     	q++;
     }
     // Поиск пути и заполнение матрицы сложности.
-
+	create_matrix(matrix, length);
 
     // Матрица смежности.
 
@@ -52,6 +53,18 @@ void            get_way(t_room **rooms, int length){
     return;
 }
 
+void		create_matrix(int **matrix, unsigned int length){
+	unsigned int q = 0;
+	unsigned int r = 0;
+
+
+	return;
+
+}
+
+void 		find_path(){
+
+}
 
 
 

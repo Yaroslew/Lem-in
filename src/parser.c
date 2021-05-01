@@ -3,7 +3,7 @@
 
 #include "lem-in.h"
 
-int		run_hardcode(t_room ***rooms_res, unsigned int *length)
+int		run_hardcode(t_room ***rooms_res, unsigned int *length, unsigned int *ants)
 {
 	t_room **rooms;
 
@@ -47,6 +47,7 @@ int		run_hardcode(t_room ***rooms_res, unsigned int *length)
 	rooms[5] = NULL;
 	*rooms_res = rooms;
 	*length = TEMP_LENGTH;
+	*ants = 10;
 	return (0);
 }
 
@@ -84,21 +85,18 @@ void			read_whole_file(t_list **read_line, int fd)
 	}
 }
 
-int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length)
+int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length, unsigned int *ants)
 {
-	t_room **rooms;
 	t_list	*whole_file;
-//	t_list	tmp_rooms;
-//	t_room
 	int     fd;
 
 	//костыль, позже уберём
 	if (ac > 1 && ft_strequ(av[1], "-1"))
-		return run_hardcode(rooms_res, length);
+		return run_hardcode(rooms_res, length, &ants);
 	if (rooms_res == NULL || length == NULL)
 		return (-1);
 	if (open_file(ac, av, &fd) != 0)
         error_management("open error");
 	read_whole_file(&whole_file, fd);
-	read_map(whole_file, rooms_res, length);
+	read_map(whole_file, rooms_res, length, ants);
 }

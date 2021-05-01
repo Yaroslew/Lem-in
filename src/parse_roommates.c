@@ -77,7 +77,12 @@ void	parse_roommates(t_list *file, t_room **rooms, unsigned int length)
 {
 	while (file && file->content && **(char **)(file->content))
 	{
-		get_roommate(*(char **)file->content, rooms, length);
-		file = file->next;
+		if (parse_comment(&file))
+			;
+		else
+		{
+			get_roommate(*(char **)file->content, rooms, length);
+			file = file->next;
+		}
 	}
 }

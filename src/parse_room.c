@@ -44,7 +44,6 @@ void    fill_the_room(t_room *room, t_list **file)
 
     if (file == NULL || *file == NULL)
         error_management("Map error - room is not defined correctly");
-//	(*file) = (*file)->next;
     line = *(char **)(*file)->content;
     if (line == NULL)
         error_management("Malloc error. Shut down.");

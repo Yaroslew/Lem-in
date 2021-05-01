@@ -96,7 +96,75 @@ void	check_res(t_room **room, unsigned int length)
 	}
 }
 
-int    read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length)
+static void	skip_whitespaces(char **str, int i)
+{
+	while ((*str)[i] && (*str)[i] == ' ')
+		i++;
+	(*str) = (*str) + i;
+}
+
+void	parse_ants(t_list **tmp_file, unsigned int *ants)
+{
+	char	*ants_num;
+	int		i;
+	t_list	*tmp;
+	int		j;
+
+	i = 0;
+	tmp = *tmp_file;
+	while (tmp)
+	{
+		ants_num = *(char **)(tmp->content);
+		tmp = tmp->next;
+		if (!ants_num || !*ants_num)
+			continue;
+		i++;
+		j = 0;
+		skip_whitespaces(&ants_num, 0);
+		ft_putendl(ants_num);
+		while (ants_num[j])
+		{
+			if (!ft_isdigit(ants_num[j]))
+				error_management("parse ants: forbidden symbol");
+			j++;
+		}
+		if (j != 0)
+		{
+			*ants = ft_atoi(ants_num);
+			break ;
+		}
+	}
+	if (i == 0 || *ants == 0)
+		error_management("Map is empty or no ants provided!");
+	*tmp_file = tmp;
+}
+
+void	check_repeats(t_room **rooms_res, unsigned int length)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < length)
+	{
+		j = 0;
+		while (j < length)
+		{
+			if (rooms_res[j] == rooms_res[i])
+			{
+				j++;
+				continue ;
+			}
+			if (rooms_res[i]->x == rooms_res[j]->x &&
+					rooms_res[i]->y == rooms_res[j]->y)
+				error_management("check_repeats: Error: coordinates for 2 rooms are equal");
+			j++;
+		}
+		i++;
+	}
+}
+
+int    read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length, unsigned int *ants)
 {
 	t_list      *tmp_lst;
 	t_room      *begin;
@@ -107,9 +175,11 @@ int    read_map(t_list *whole_file, t_room ***rooms_res, unsigned int *length)
 	begin = NULL;
 	end = NULL;
 	tmp = whole_file;
+	parse_ants(&tmp, ants);
 	*length = read_map_rooms(&tmp, &tmp_lst, &begin, &end);
 	*rooms_res = create_array(tmp_lst, begin, end, *length);
 	check_res(*rooms_res, *length);
 	parse_roommates(tmp, *rooms_res, *length);
+	check_repeats(*rooms_res, *length);
 	ft_putendl("Ok");
 }

@@ -4,10 +4,11 @@ int				main(int ac, char **av){
     // тестовые данные.
     unsigned int        length; // количество комнат.
     t_room				**rooms;
+    unsigned int		ants;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-	if (parser(ac, av, &rooms, &length) == -1)
+	if (parser(ac, av, &rooms, &length, &ants) == -1)
     	error_management("msg");
 
     // Поиск в ширину и Эдмондс-Карп.

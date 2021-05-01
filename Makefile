@@ -9,6 +9,7 @@ SRC_FILES = main.c\
 			parser.c\
 			parse_map.c\
 			parse_room.c\
+			breadth_first_search.c\
 
 SRCS 		= $(addprefix $(SRC)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ)/, $(SRC_FILES:c=o))

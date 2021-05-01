@@ -97,4 +97,4 @@ add_executable(Lem_in
         src/parse_map.c
         src/parse_room.c
         src/error_management.c
-        src/main.c)
+        src/main.c src/breadth_first_search.c)

@@ -26,10 +26,16 @@ void            set_queue(char **queue,  t_room *room, unsigned int length);
 void            set_weight(char *name, t_room **rooms,unsigned int weight, unsigned int length);
 t_room			*get_room_by_name(char *name, t_room **rooms, unsigned int length);
 //matrix
-void			create_matrix(t_room **rooms, int **matrix, unsigned int length);
+int				**create_matrix(unsigned int length);
+int				*ft_realloc_int(int **exist_arr, unsigned int length);
+void			clean_status(t_room **rooms, unsigned int length);
+t_room			*get_last_room(t_room **room, unsigned int length, int last_room_num);
+int 			check_end_find_path(t_room *curr, unsigned int length);
+int 			check_path_by_matrix(int** matrix, t_room *current_room, t_room *next_room, unsigned int length);
+int 			*find_path(t_room **rooms, int* matrix, unsigned int length);
 
 // Тестовая хрень.
-void		error_management(char *msg);
+void			error_management(char *msg);
 int				check_costil(int ac, char **av, t_room ***rooms_res, unsigned int *length, unsigned int *ants);
 
 /*

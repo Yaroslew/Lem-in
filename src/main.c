@@ -48,8 +48,8 @@ void            get_way(t_room **rooms, unsigned int length){
     	q++;
     }
     // Поиск пути и заполнение матрицы сложности.
-	create_matrix(rooms, matrix, length);
-
+	matrix = create_matrix(length);
+	find_path(rooms, matrix, length);
     // Матрица смежности.
 
     // repeat пока есть пути.
@@ -58,41 +58,105 @@ void            get_way(t_room **rooms, unsigned int length){
     return;
 }
 
-void		create_matrix(t_room **rooms, int **matrix, unsigned int length){
+int		**create_matrix(unsigned int length){
 	unsigned int q = 0;
+	unsigned int r = 0;
+	int matrix[length][length];
 
-	// 1 = путь вперед.
-	// -1 = путь назад.
-	// 0 = отставить путь.
-	matrix = ft_memalloc(sizeof (int*)*length);
-	while (q < length)
-	{
-		matrix[q] = ft_memalloc(sizeof(int) * length);
-		ft_bzero(matrix[q], sizeof(int) * (length));
+	while(q < length){
+		while (r < length){
+			matrix[q][r] = 0;
+			r++;
+		}
+		r = 0;
 		q++;
 	}
-
-	for(unsigned i = 0; i < length; i++){
-		ft_printf("r0=%d\n", matrix[i][0]);
-		ft_printf("r1=%d\n", matrix[i][1]);
-		ft_printf("r2=%d\n", matrix[i][2]);
-		ft_printf("r3=%d\n", matrix[i][3]);
-		ft_printf("r4=%d\n", matrix[i][4]);
-	}
-	return;
+	return matrix;
 
 }
 
-void 		find_path(t_room **rooms, int** matrix){
+int 		*find_path(t_room **rooms, int* matrix, unsigned int length){
+	int 	*path;
+	int 	length_path;
+	int 	q;
+	t_room	*current_room;
+
+
+	length_path = 1;
+	q = 0;
+	path = ft_memalloc(sizeof (int));
+	path[0] = rooms[0]->number;
+	current_room = rooms[0];
+
+	clean_status(rooms, length);
+
+	while(current_room->number != length - 1){
+		while(q < current_room->count_ways)
+		{
+			if (current_room->ways[q]->status != -1	&&
+			check_path_by_matrix(matrix, current_room, current_room->ways[q], length) == 1){
+				path = ft_realloc_int(path, length_path);
+				path[length_path] = current_room->ways[q]->number;
+				length_path++;
+				current_room = current_room->ways[q];
+				break;
+			}
+			if (q + 1 == current_room->count_ways){
+				current_room->status = -1;
+				current_room = get_last_room(rooms, length, path);
+			}
+			if (current_room->number == 0){
+				if (check_end_find_path(current_room, length) == 1){
+					length_path = 0;
+					free(path);
+					break;
+				}
+			}
+			q++;
+		}
+		q = 0;
+	}
+
+	for(unsigned int i = 0; i < length_path; i++){
+		ft_printf("-%d", path[q]);
+	}
+
+	return path;
+
 	//	Найти путь от начала до конца.
 	//  Путь не должен повторяться.
 	// 	Сохранить новый путь в матрицу.
+}
 
+int 		check_end_find_path(t_room *curr, unsigned int length){
+	unsigned q;
+
+	q = 0;
+	while(q < length){
+		if(curr->ways[q]->status != -1)
+			return (0);
+		q++;
+	}
+	return 1;
+}
+
+t_room		*get_last_room(t_room **rooms, unsigned int length, int last_room_num){
+	unsigned int q;
+
+	q = 0;
+	while(q < length){
+		if (rooms[q]->number == last_room_num){
+			return rooms[q];
+			break;
+		}
+		q++;
+	}
 }
 
 int 		check_path_by_matrix(int** matrix, t_room *current_room, t_room *next_room, unsigned int length){
 	unsigned int q = 0;
 	int			*next_row;
+
 
 	while (q < length){
 		if (matrix[q][0] == next_room->number){
@@ -113,6 +177,31 @@ void		add_new_path_to_matrix(){
 
 }
 
+int		*ft_realloc_int(int **exist_arr, unsigned int length){
+	unsigned q;
+	int		*res;
+	int		*arr;
+
+	q = 0;
+	arr = *exist_arr;
+	res = ft_memalloc(sizeof (int) * (length + 1));
+	while (q < length){
+		res[q] = arr[q];
+		q++;
+	}
+	free(arr);
+	return res;
+}
+
+void clean_status(t_room **rooms, unsigned int length){
+	unsigned int q;
+
+	q = 0;
+	while(q < length){
+		rooms[q]->status = 0;
+		q++;
+	}
+}
 
 
 

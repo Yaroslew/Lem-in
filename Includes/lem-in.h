@@ -15,6 +15,7 @@ typedef struct		s_room
     int				y;
 	int				status;
 	int				weight;
+	unsigned int 	number; // порядковый номер. Первый - комната старт, последний - финиш.
 }					t_room;
 
 //main
@@ -25,7 +26,7 @@ void            set_queue(char **queue,  t_room *room, unsigned int length);
 void            set_weight(char *name, t_room **rooms,unsigned int weight, unsigned int length);
 t_room			*get_room_by_name(char *name, t_room **rooms, unsigned int length);
 //matrix
-void			create_matrix(int **matrix, unsigned int length);
+void			create_matrix(t_room **rooms, int **matrix, unsigned int length);
 
 // Тестовая хрень.
 void		error_management(char *msg);

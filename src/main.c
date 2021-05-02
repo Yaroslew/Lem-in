@@ -5,11 +5,15 @@ int				main(int ac, char **av){
     unsigned int        length; // количество комнат.
     t_room				**rooms;
     unsigned int		ants;
+    t_list				*red_file;
 
 
     // парсер и проверки правильности карт. Получение массива комнат.
-	if (parser(ac, av, &rooms, &length, &ants) == -1)
-    	error_management("msg");
+    if (!check_costil(ac, av, &rooms, &length, &ants))
+	{
+    	read_whole_file(&red_file, ac, av);
+		parser(red_file, &rooms, &length, &ants);
+	}
 
     // Поиск в ширину и Эдмондс-Карп.
     get_way(rooms, length);

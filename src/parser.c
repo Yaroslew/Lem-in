@@ -3,54 +3,6 @@
 
 #include "lem-in.h"
 
-int		run_hardcode(t_room ***rooms_res, unsigned int *length, unsigned int *ants)
-{
-	t_room **rooms;
-
-	rooms = ft_memalloc(sizeof(t_room *) * (TEMP_LENGTH + 1));
-	for (unsigned int i = 0; i < TEMP_LENGTH; i++)
-	{
-		rooms[i] = ft_memalloc(sizeof(t_room));
-	}
-	for(int i = 0; i < TEMP_LENGTH; i++)
-		rooms[i]->name = (char *)malloc(sizeof (char)*2);
-	rooms[0]->name = "R0";
-	rooms[1]->name = "R1";
-	rooms[2]->name = "R2";
-	rooms[3]->name = "R3";
-	rooms[4]->name = "R4";
-
-	rooms[0]->ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[0]->ways[0] = rooms[1];
-	rooms[0]->ways[1] = rooms[2];
-	rooms[0]->count_ways = 2;
-
-	rooms[1]->ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[1]->ways[0] = rooms[0];
-	rooms[1]->ways[1] = rooms[4];
-	rooms[1]->count_ways = 2;
-
-	rooms[2]->ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[2]->ways[0] = rooms[0];
-	rooms[2]->ways[1] = rooms[3];
-	rooms[2]->count_ways = 2;
-
-	rooms[3]->ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[3]->ways[0] = rooms[2];
-	rooms[3]->ways[1] = rooms[4];
-	rooms[3]->count_ways = 2;
-
-	rooms[4]->ways = (t_room**)malloc(sizeof(t_room*) * 2);
-	rooms[4]->ways[0] = rooms[1];
-	rooms[4]->ways[1] = rooms[3];
-	rooms[4]->count_ways = 2;
-	rooms[5] = NULL;
-	*rooms_res = rooms;
-	*length = TEMP_LENGTH;
-	*ants = 10;
-	return (0);
-}
-
 int     open_file(int ac, char **av, int *fd)
 {
     if (ac < 2)
@@ -62,41 +14,38 @@ int     open_file(int ac, char **av, int *fd)
     return (0);
 }
 
-void			read_whole_file(t_list **read_line, int fd)
+void			read_whole_file(t_list **read_line, int ac, char **av)
 {
 	char        	*line;
 	t_list			*tmp;
+	int				fd;
 
+	if (open_file(ac, av, &fd) != 0)
+		error_management("open error");
 	*read_line = NULL;
 	while (get_next_line(fd, &line))
 	{
 		if (*read_line == NULL)
 		{
 			*read_line = ft_lstnew(&line, sizeof(char **));
-			(*read_line)->next = NULL;
 			tmp = *read_line;
 		}
 		else
 		{
 			tmp->next = ft_lstnew(&line, sizeof(char **));
 			tmp = tmp->next;
-			tmp->next = NULL;
 		}
+		tmp->next = NULL;
 	}
 }
 
-int		parser(int ac, char **av, t_room ***rooms_res, unsigned int *length, unsigned int *ants)
+void		parser(t_list *whole_file, t_room ***rooms_res, unsigned int *length, unsigned int *ants)
 {
-	t_list	*whole_file;
 	int     fd;
 
 	//костыль, позже уберём
-	if (ac > 1 && ft_strequ(av[1], "-1"))
-		return run_hardcode(rooms_res, length, &ants);
 	if (rooms_res == NULL || length == NULL)
-		return (-1);
-	if (open_file(ac, av, &fd) != 0)
-        error_management("open error");
-	read_whole_file(&whole_file, fd);
+		error_management("parser: unexpected error");
+//	read_whole_file(&whole_file, fd);
 	read_map(whole_file, rooms_res, length, ants);
 }

@@ -28,8 +28,15 @@ t_room			*get_room_by_name(char *name, t_room **rooms, unsigned int length);
 void			create_matrix(int **matrix, unsigned int length);
 
 // Тестовая хрень.
-int         parser(int ac, char **av, t_room ***rooms_res, unsigned int *length, unsigned int *ants);
 void		error_management(char *msg);
+int				check_costil(int ac, char **av, t_room ***rooms_res, unsigned int *length, unsigned int *ants);
+
+/*
+**		parser.c
+*/
+
+void			read_whole_file(t_list **read_line, int ac, char **av);
+void			parser(t_list *whole_file, t_room ***rooms_res, unsigned int *length, unsigned int *ants);
 
 /*
 **      parse_map.c

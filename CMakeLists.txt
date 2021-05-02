@@ -100,4 +100,5 @@ add_executable(Lem_in
         src/parse_roommates.c
         src/main.c
         src/main.c
-        src/breadth_first_search.c)
+        src/breadth_first_search.c
+        src/check_costil.c)
